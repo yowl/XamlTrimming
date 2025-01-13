@@ -1,0 +1,50 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net9.0-windows</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DefineConstants>$(DefineConstants);PRESENTATION_CORE;WINDOWS_BASE</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DefineConstants>$(DefineConstants);PRESENTATION_CORE;WINDOWS_BASE</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="PresentationCore\**" />
+    <Compile Remove="PresentationFramework\**" />
+    <Compile Remove="System.Xaml\**" />
+    <Compile Remove="WindowsBase\**" />
+    <EmbeddedResource Remove="PresentationCore\**" />
+    <EmbeddedResource Remove="PresentationFramework\**" />
+    <EmbeddedResource Remove="System.Xaml\**" />
+    <EmbeddedResource Remove="WindowsBase\**" />
+    <None Remove="PresentationCore\**" />
+    <None Remove="PresentationFramework\**" />
+    <None Remove="System.Xaml\**" />
+    <None Remove="WindowsBase\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CommandLineParser" Version="2.9.1" />
+    <PackageReference Include="System.Reflection.Metadata" Version="9.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ICSharpCode.BamlDecompiler\ICSharpCode.BamlDecompiler.csproj" />
+    <ProjectReference Include="..\ICSharpCode.ILSpyX\ICSharpCode.ILSpyX.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="System.Xaml">
+      <HintPath>System.Xaml.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>

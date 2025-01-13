@@ -1,0 +1,101 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <WarningsAsErrors>nullable</WarningsAsErrors>
+
+    <SignAssembly>True</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\ICSharpCode.Decompiler\ICSharpCode.Decompiler.snk</AssemblyOriginatorKeyFile>
+
+    <NeutralLanguage>en-US</NeutralLanguage>
+    <GenerateAssemblyVersionAttribute>False</GenerateAssemblyVersionAttribute>
+    <GenerateAssemblyFileVersionAttribute>False</GenerateAssemblyFileVersionAttribute>
+    <GenerateAssemblyInformationalVersionAttribute>False</GenerateAssemblyInformationalVersionAttribute>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <PackageId>ICSharpCode.ILSpyX</PackageId>
+    <PackageVersion>8.0.0.0-noversion</PackageVersion>
+    <Title>ILSpyX Platform</Title>
+    <Authors>ILSpy Contributors</Authors>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/icsharpcode/ILSpy/</PackageProjectUrl>
+    <Description>Core cross-platform library used by ILSpy.</Description>
+    <PackageReadmeFile>PackageReadme.md</PackageReadmeFile>
+    <Company>ic#code</Company>
+    <Product>ILSpyX</Product>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/icsharpcode/ILSpy.git</RepositoryUrl>
+    <PackageIconUrl>../ICSharpCode.Decompiler/DecompilerNuGetPackageIcon.png</PackageIconUrl>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <Copyright>Copyright 2022-$([System.DateTime]::Now.Year) AlphaSierraPapa</Copyright>
+    <PackageTags>C# Decompiler ILSpy</PackageTags>
+
+    <DebugType>embedded</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="PackageReadme.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Properties\AssemblyInfo.template.cs" />
+  </ItemGroup>
+
+  <PropertyGroup Condition="'$(GITHUB_ACTIONS)' == 'true'">
+    <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+  </PropertyGroup>
+
+  <!-- Inject ILSpyUpdateAssemblyInfo as dependency of the GetPackageVersion
+    target so Pack uses the generated version when evaluating project references. -->
+  <PropertyGroup>
+    <GetPackageVersionDependsOn>
+      ILSpyUpdateAssemblyInfo;
+      $(GetPackageVersionDependsOn)
+    </GetPackageVersionDependsOn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="MermaidDiagrammer\html\node_modules\**" />
+    <None Remove="MermaidDiagrammer\html\.eslintrc.js" />
+    <None Remove="MermaidDiagrammer\html\.gitignore" />
+    <None Remove="MermaidDiagrammer\html\class-diagrammer.html" />
+    <None Remove="MermaidDiagrammer\html\gulpfile.js" />
+    <None Remove="MermaidDiagrammer\html\model.json" />
+    <None Remove="MermaidDiagrammer\html\package-lock.json" />
+    <None Remove="MermaidDiagrammer\html\package.json" />
+    <None Remove="MermaidDiagrammer\html\styles.less" />
+    <EmbeddedResource Include="..\ILSpy\Images\ILSpy.ico" Link="MermaidDiagrammer\html\ILSpy.ico" />
+    <EmbeddedResource Include="MermaidDiagrammer\html\script.js" />
+    <EmbeddedResource Include="MermaidDiagrammer\html\styles.css" />
+    <EmbeddedResource Include="MermaidDiagrammer\html\template.html" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Composition.AttributedModel" />
+    <PackageReference Include="System.Reflection.Metadata" />
+    <PackageReference Include="System.Runtime.CompilerServices.Unsafe" />
+    <PackageReference Include="Mono.Cecil" />
+    <PackageReference Include="K4os.Compression.LZ4" />
+    <PackageReference Include="Microsoft.SourceLink.GitHub">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ICSharpCode.Decompiler\ICSharpCode.Decompiler.csproj" />
+  </ItemGroup>
+
+  <Target Name="ILSpyUpdateAssemblyInfo" AfterTargets="ResolveProjectReferences">
+    <ReadLinesFromFile ContinueOnError="true" File="..\VERSION">
+      <Output TaskParameter="Lines" PropertyName="PackageVersion" />
+    </ReadLinesFromFile>
+  </Target>
+
+</Project>
